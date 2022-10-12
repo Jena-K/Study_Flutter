@@ -1,16 +1,4 @@
-# stateful_widget_2021011
+Stateful widget
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<img src="https://user-images.githubusercontent.com/50435560/195365071-7af6e925-2052-40cd-ae85-1938c543c2c6.png">
+플러스 ,마이너스 버튼을 눌러 statful 하게 현재 count를 출력
