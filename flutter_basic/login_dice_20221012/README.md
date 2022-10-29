@@ -2,15 +2,9 @@
 
 A new Flutter project.
 
-## Getting Started
+구현 기능
+- 로그인
+- 버튼을 누르면 statlefull 하게 주사위 숫자가 무작위로 변함
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<img src="https://user-images.githubusercontent.com/50435560/198825666-b4edfcb7-1b6a-40da-b384-9bcb9b2eaabc.png">
+<img src="https://user-images.githubusercontent.com/50435560/198825668-013db0cf-24fa-40e9-aec7-5e2edb5e19c7.png">
