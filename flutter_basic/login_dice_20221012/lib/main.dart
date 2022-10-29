@@ -89,18 +89,19 @@ class _LogInState extends State<LogIn> {
                             height: 50,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.orangeAccent),
+                                primary: Colors.orangeAccent,
+                              ),
                               child: Icon(Icons.arrow_forward,
                                   color: Colors.white),
                               onPressed: () {
-                                if (controller.text == 'nice' &&
+                                if (controller.text == 'dice' &&
                                     controller2.text == '1234') {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (BuildContext context) =>
                                               Dice()));
-                                } else if (controller.text == 'nice') {
+                                } else if (controller.text == 'dice') {
                                   showSnackBar(context);
                                 } else if (controller2.text == '1234') {
                                   showSnackBar2(context);
