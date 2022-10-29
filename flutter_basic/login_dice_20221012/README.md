@@ -1,6 +1,5 @@
 # login_dice_20221012
 
-A new Flutter project.
 
 구현 기능
 - 로그인
