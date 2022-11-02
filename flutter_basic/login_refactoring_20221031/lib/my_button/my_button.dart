@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 
 class MyButton extends StatelessWidget {
   // const MyButton({super.key});
-  final Widget image;
-  final Widget text;
-  final Color color;
-  final double radius;
-  final VoidCallback onPressed;
+  late Widget image;
+  final Widget? text;
+  final Color? color;
+  final double? radius;
+  final VoidCallback? onPressed;
 
-  MyButton(
-      {required this.image,
-      required this.text,
-      required this.color,
-      required this.radius,
-      required this.onPressed});
+  MyButton({this.image, this.text, this.color, this.radius, this.onPressed});
+
+  // {required this.image,
+  // required this.text,
+  // required this.color,
+  // required this.radius,
+  // required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

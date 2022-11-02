@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../my_button/my_button.dart';
 
 class LogIn extends StatelessWidget {
-  const LogIn({super.key});
-
+  // const LogIn({super.key});
+  int a;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
