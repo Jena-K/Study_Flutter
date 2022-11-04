@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:http/http.dart';
+import '../data/my_location.dart';
+import '../data/network.dart';
+
+// const apikey = '06ae93fbc8e8edad7b6adb249c528403';
+const apikey = '7d2214b6e1da49d91df64233cda1bdb5';
 
 class Loading extends StatefulWidget {
   @override
@@ -8,29 +12,29 @@ class Loading extends StatefulWidget {
 }
 
 class _LoadingState extends State<Loading> {
+  double? latitude3;
+  double? longitude3;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getLocation();
-    fetchData();
   }
 
   void getLocation() async {
-    try {
-      LocationPermission permission = await Geolocator.requestPermission();
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-      print(position);
-    } catch (e) {
-      print('There was a problem with the internet connection.');
-    }
-  }
+    MyLocation myLocation = MyLocation();
+    await myLocation.getMyCurrentLocation();
+    latitude3 = myLocation.latitude2;
+    longitude3 = myLocation.longitude2;
+    print(latitude3);
+    print(longitude3);
 
-  void fetchData() async {
-    Response response = await get(Uri.parse(
-        'https://samples.openweathermap.org/data/2.5/weather?q=London&appid=b1b15e88fa797225412429c1c50c122a1'));
-    print(response.body);
+    Network network = Network(
+        // 'https://samples.openweathermap.org/data/2.5/weather?q=London&appid=b1b15e88fa797225412429c1c50c122a1');
+        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude3&lon=$longitude3&appid=$apikey');
+    var weatherData = await network.getJsonData();
+    print(weatherData['weather'][0]['description']);
   }
 
   @override
