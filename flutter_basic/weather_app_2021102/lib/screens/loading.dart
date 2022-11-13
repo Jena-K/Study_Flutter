@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:weather_app_2021102/screens/weather_screen.dart';
 import '../data/my_location.dart';
 import '../data/network.dart';
 
-// const apikey = '06ae93fbc8e8edad7b6adb249c528403';
 const apikey = '7d2214b6e1da49d91df64233cda1bdb5';
 
 class Loading extends StatefulWidget {
@@ -17,7 +16,6 @@ class _LoadingState extends State<Loading> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getLocation();
   }
@@ -35,6 +33,10 @@ class _LoadingState extends State<Loading> {
         'https://api.openweathermap.org/data/2.5/weather?lat=$latitude3&lon=$longitude3&appid=$apikey');
     var weatherData = await network.getJsonData();
     print(weatherData['weather'][0]['description']);
+
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return WeatherScreen(parseWeatherData: weatherData);
+    }));
   }
 
   @override
