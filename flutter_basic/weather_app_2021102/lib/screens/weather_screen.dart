@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class WeatherScreen extends StatefulWidget {
   WeatherScreen({this.parseWeatherData});
-  final parseWeatherData;
+  final dynamic parseWeatherData;
   // const WeatherScreen({super.key});
 
   @override
@@ -10,6 +10,22 @@ class WeatherScreen extends StatefulWidget {
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(widget.parseWeatherData);
+  }
+
+  void updateData(dynamic weatherData) {
+    var myJson = weatherData['weather'][0]['description'];
+    print(myJson);
+    var wind = weatherData['weather']['speed'];
+    print(myJson);
+    var id = weatherData['id'];
+    print(myJson);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
