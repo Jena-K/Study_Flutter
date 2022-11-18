@@ -10,41 +10,39 @@ class WeatherScreen extends StatefulWidget {
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
+  int? temp;
+  String? cityName;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    print(widget.parseWeatherData);
+    updateData(widget.parseWeatherData);
   }
 
   void updateData(dynamic weatherData) {
-    var myJson = weatherData['weather'][0]['description'];
-    print(myJson);
-    var wind = weatherData['weather']['speed'];
-    print(myJson);
-    var id = weatherData['id'];
-    print(myJson);
+    double temp2 = weatherData['main']['temp'];
+    temp = temp2.round();
+    cityName = weatherData['name'];
+
+    print(temp);
+    print(cityName);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'City name',
-                style: TextStyle(fontSize: 30.0),
-              ),
-              SizedBox(height: 20.0),
-              Text(
-                'Temperature',
-                style: TextStyle(fontSize: 30.0),
-              ),
-            ],
-          ),
+      appBar: AppBar(
+        title: Text(''),
+      ),
+      body: Container(
+        child: Stack(
+          children: [
+            Image.asset(
+              'image/background.jpg',
+              fit: BoxFit.cover,
+            ),
+          ],
         ),
       ),
     );

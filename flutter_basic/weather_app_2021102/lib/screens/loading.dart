@@ -30,12 +30,14 @@ class _LoadingState extends State<Loading> {
 
     Network network = Network(
         // 'https://samples.openweathermap.org/data/2.5/weather?q=London&appid=b1b15e88fa797225412429c1c50c122a1');
-        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude3&lon=$longitude3&appid=$apikey');
+        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude3&lon=$longitude3&appid=$apikey&units=metric');
     var weatherData = await network.getJsonData();
     print(weatherData['weather'][0]['description']);
 
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return WeatherScreen(parseWeatherData: weatherData);
+      return WeatherScreen(
+        parseWeatherData: weatherData,
+      );
     }));
   }
 
