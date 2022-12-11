@@ -3,10 +3,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:timer_builder/timer_builder.dart';
 import 'package:intl/intl.dart';
+import 'package:weather_app_2021102/model/model.dart';
 
 class WeatherScreen extends StatefulWidget {
-  WeatherScreen({this.parseWeatherData});
+  WeatherScreen({this.parseWeatherData, this.parseAirPollution});
   final dynamic parseWeatherData;
+  final dynamic parseAirPollution;
   // const WeatherScreen({super.key});
 
   @override
@@ -14,24 +16,41 @@ class WeatherScreen extends StatefulWidget {
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
-  int? temp;
+  Model model = Model();
   String? cityName;
+  int? temp;
+  Widget? icon;
+  Widget? airIcon;
+  Widget? airState;
+  String? des;
+  double? particle;
+  double? uParticle;
   var date = DateTime.now();
 
   @override
   void initState() {
-    // TODO: implement initState
+    // TODO: implem nt initState
     super.initState();
-    updateData(widget.parseWeatherData);
+    updateData(widget.parseWeatherData, widget.parseAirPollution);
   }
 
-  void updateData(dynamic weatherData) {
-    double temp2 = weatherData['main']['temp'];
-    temp = temp2.round();
+  void updateData(dynamic weatherData, dynamic airData) {
+    double temp2 = weatherData['main']['temp'].toDouble();
+    int condition = weatherData['weather'][0]['id'];
+    des = weatherData['weather'][0]['description'];
     cityName = weatherData['name'];
+    int index = airData['list'][0]['main']['aqi'];
+    particle = airData['list'][0]['components']['pm2_5'];
+    uParticle = airData['list'][0]['components']['pm10'];
+
+    icon = model.getWeatherIcon(condition);
+    airIcon = model.getAirIcon(index);
+    airState = model.getAirCondition(index);
+    temp = temp2.round();
 
     print(temp);
     print(cityName);
+    print('WEATHERDATA: $weatherData');
   }
 
   String getSystemTime() {
@@ -75,43 +94,157 @@ class _WeatherScreenState extends State<WeatherScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 150.0,
-                          ),
-                          Text(
-                            'Seoul',
-                            style: GoogleFonts.lato(
-                              fontSize: 35.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 150.0,
                             ),
-                          ),
-                          Row(
+                            Text(
+                              '$cityName',
+                              style: GoogleFonts.lato(
+                                fontSize: 35.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                TimerBuilder.periodic(
+                                  Duration(minutes: 1),
+                                  builder: (context) {
+                                    print('${getSystemTime()}');
+                                    return Text(
+                                      '${getSystemTime()}',
+                                      style: GoogleFonts.lato(
+                                        fontSize: 16.0,
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  },
+                                ),
+                                Text(
+                                  DateFormat(' - EEEE, ').format(date),
+                                  style: GoogleFonts.lato(
+                                    fontSize: 16.0,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Text(
+                                  DateFormat('d MMM, yyy').format(date),
+                                  style: GoogleFonts.lato(
+                                    fontSize: 16.0,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '$temp\u2103',
+                              style: GoogleFonts.lato(
+                                  fontSize: 85.0,
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.white),
+                            ),
+                            Row(
+                              children: [
+                                icon!,
+                                // SvgPicture.asset('svg/climacon-sun.svg'),
+                                SizedBox(width: 10.0),
+                                Text(
+                                  '$des',
+                                  style: GoogleFonts.lato(
+                                    fontSize: 16.0,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      Divider(
+                        height: 15.0,
+                        thickness: 2.0,
+                        color: Colors.white30,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
                             children: [
-                              TimerBuilder.periodic(
-                                Duration(minutes: 1),
-                                builder: (context) {
-                                  print('${getSystemTime()}');
-                                  return Text(
-                                    '${getSystemTime()}',
-                                    style: GoogleFonts.lato(
-                                      fontSize: 16.0,
-                                      color: Colors.white,
-                                    ),
-                                  );
-                                },
+                              Text(
+                                'AQI (대기질 지수)',
+                                style: GoogleFonts.lato(
+                                  fontSize: 14.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              airIcon!,
+                              // Image.asset(
+                              //   'image/bad.png',
+                              //   width: 37.5,
+                              //   height: 35.0,
+                              // ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              airState!,
+                              // Text(
+                              // '매우 나쁨',
+                              // style: GoogleFonts.lato(
+                              // fontSize: 14.0,
+                              // color: Colors.black87,
+                              // fontWeight: FontWeight.bold,
+                              // ),
+                              // ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                '미세먼지',
+                                style: GoogleFonts.lato(
+                                  fontSize: 14.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.0,
                               ),
                               Text(
-                                DateFormat(' - EEEE').format(date),
+                                '$particle',
                                 style: GoogleFonts.lato(
-                                  fontSize: 16.0,
+                                  fontSize: 24.0,
                                   color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Text(
+                                'μg/m3',
+                                style: GoogleFonts.lato(
+                                  fontSize: 14.0,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ],
@@ -119,31 +252,38 @@ class _WeatherScreenState extends State<WeatherScreen> {
                           Column(
                             children: [
                               Text(
-                                'Seoul',
+                                '초미세먼지',
                                 style: GoogleFonts.lato(
-                                  fontSize: 35.0,
-                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14.0,
                                   color: Colors.white,
                                 ),
                               ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Text(
+                                '$uParticle',
+                                style: GoogleFonts.lato(
+                                  fontSize: 24.0,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Text(
+                                'μg/m3',
+                                style: GoogleFonts.lato(
+                                  fontSize: 14.0,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ],
-                          )
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Divider(
-                            height: 15.0,
-                            thickness: 2.0,
-                            color: Colors.white30,
                           ),
-                          Row(
-                            children: [
-                              Text('미세먼지'),
-                            ],
-                          )
                         ],
-                      ),
+                      )
                     ],
                   ),
                 ],
